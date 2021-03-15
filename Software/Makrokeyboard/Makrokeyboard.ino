@@ -14,32 +14,32 @@
 #define TR3 2
 #define TR4 3
 
-
+#define KEY_SPACE 32
 
 uint8_t rows[4] = {TR4, TR3, TR2, TR1};
 uint8_t cols[5] = {TS5, TS4, TS3, TS2, TS1};
 
 
 //Key Mask for first Key
-char key[4][5] = {{KEY_F13,17,'w','u','u'},
-                  {KEY_F14,'a','s','d','9'},
-                  {KEY_F15,'b','c','d','e'},                    
-                  {KEY_F16,'c','v',KEY_TAB,KEY_SPACE}};
+char key[4][5] = {{'v',0,'n','m','u'},
+                  {'g','h','j','k','l'},
+                  {'9','0','u','i','o'},                    
+                  {'6','7','8','9','0'}};
 
 //Key Mask for second Key
-char mask[4][5] = {{0,0,0,KEY_LEFT_SHIFT,KEY_LEFT_CTRL},
+char mask[4][5] = {{0,0,0,0,0},
                    {0,0,0,0,0},
                    {0,0,0,0,0},                    
-                   {0,KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_ALT,0}};
+                   {0,0,0,0,0}};
 
 //Key Mask for third Key
-char mask2[4][5] = {{0,0,0,KEY_LEFT_CTRL,0},
+char mask2[4][5] = {{0,0,0,0,0},
                    {0,0,0,0,0},
                    {0,0,0,0,0},                    
                    {0,0,0,0,0}};
 
 //Mask for Strings
-String str_mask[4][5] = {{"",">poop> \n","","",""},
+String str_mask[4][5] = {{"",">poop>\n","","",""},
                          {"","","","",""},
                          {"","","","",""},
                          {"","","","",""}};
@@ -48,7 +48,7 @@ String str_mask[4][5] = {{"",">poop> \n","","",""},
 //0: Regular key behaviour with masks
 //1: Single key stroke of "Key" Matrix
 //2: Print String from String Mask
-//
+
 char press_once[4][5] = {{0,2,0,0,0},
                          {0,0,0,0,0},
                          {0,0,0,0,0},                    
@@ -62,7 +62,7 @@ uint8_t led_map_default[4][5] = {{16,17,18,19,20},
                                  {5,4,3,2,1}};
 
 uint8_t led_map_horz[21] = {16,17,18,19,20,15,14,13,12,11,6,7,8,9,10,5,4,3,2,1,0};
-
+uint8_t led_map_diag[21] = {16,15,17,6,14,18,5,7,13,19,4,8,12,20,3,9,11,2,10,1,0};
 
 //Buffer for pressed Keys
 uint8_t key_buffer[4][5] = {0};
@@ -91,6 +91,7 @@ void RGB_Solid_Rows(uint16_t val);
 void RGB_Solid_Cols(uint16_t val);
 void key_flash(void);
 void key_wave(void);
+void RGB_Fade_Diag(void);
 
 void get_keys(void){
   for(uint8_t i = 0; i<4; i++){
@@ -178,13 +179,13 @@ unsigned char color_g(unsigned int count){
   if (count >=(RES/3) && count <(2*RES/3)){
     return (int)((255*(count-(RES/3))/(RES/3)));
   }
-  else if (count >=(2*RES/3) && count <(RES)){
+  else if (count >=(2*RES/3) && count <=(RES)){
     return (int)(510-(255*(count-(RES/3))/(RES/3)));
   }
   else if (count >=RES + (RES/3) && count <RES +(2*RES/3)){
     return (int)((255*(count-(RES/3)-RES)/(RES/3)));
   }
-  else if (count >= RES + (2*RES/3) && count <RES+ (RES)){
+  else if (count >= RES + (2*RES/3) && count <= RES+ (RES)){
     return (int)(510-(255*(count-(RES/3)-RES)/(RES/3)));
   }
   else{
@@ -268,7 +269,7 @@ void key_wave(void){
 void RGB_Simple(uint8_t r, uint8_t g, uint8_t b){
   led.setBrightness(50);
   for(int i = 0; i< NUMPIXELS;++i){
-    led.setPixelColor(led_map_horz[i],r,g,b);
+    led.setPixelColor(led_map_diag[i],r,g,b);
     
   }
   led.show();
@@ -318,8 +319,7 @@ void key_flash(void){
 void RGB_Solid(uint16_t val){
   led.setBrightness(50);
   for(int i = 0; i< NUMPIXELS;++i){
-    led.setPixelColor(led_map_horz[i],color_r((val + i*phaseshift)%RES),color_g((val + i*phaseshift)%RES),color_b((val + i*phaseshift)%RES));
-    
+    led.setPixelColor(led_map_diag[i],color_r((val + i*phaseshift)%RES),color_g((val + i*phaseshift)%RES),color_b((val + i*phaseshift)%RES));
   }
   led.show();
 }
@@ -339,7 +339,7 @@ void RGB_Solid_Rows(uint16_t val){
   led.show();
 }
 
-/7Fade between Cols
+//Fade between Cols
 void RGB_Solid_Cols(uint16_t val){
   led.setBrightness(50);
   for(int i = 0; i< 5;++i){
@@ -349,6 +349,20 @@ void RGB_Solid_Cols(uint16_t val){
     led.setPixelColor(led_map_horz[i+15],color_r((val + i*phaseshift)%RES),color_g((val + i*phaseshift)%RES),color_b((val + i*phaseshift)%RES)); 
   }
   led.show();
+}
+
+void RGB_Fade_Diag(void){
+  led.setBrightness(50);
+  for(int i = 0; i< NUMPIXELS;++i){
+    led.setPixelColor(led_map_diag[i],color_r((countges + i*phaseshift)%RES),color_g((countges + i*phaseshift)%RES),color_b((countges + i*phaseshift)%RES));
+  }
+  led.show();
+  if (countges < RES){
+    countges ++;
+  }
+  else{
+    countges = 0;
+  }
 }
 
 void setup() {
@@ -372,7 +386,7 @@ void setup() {
   led.show();
   Keyboard.begin();
   delay(10);
-  RGB_Solid(500);
+  RGB_Solid(600);
 
   
 }
@@ -381,8 +395,11 @@ void setup() {
 void loop() {
     
 
+
   get_keys();
-  //key_wave();
+
+
+ 
   
   
 
