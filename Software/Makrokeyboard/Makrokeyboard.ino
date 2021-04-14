@@ -24,22 +24,22 @@ uint8_t cols[5] = {TS5, TS4, TS3, TS2, TS1};
 
 
 //F-Keys
-char key[4][5] = {{KEY_F1,KEY_F2,KEY_F3,KEY_F4,KEY_F5},
-                  {KEY_F6,KEY_F7,KEY_F8,KEY_F9,KEY_F10},
-                  {KEY_F11,KEY_F12,KEY_F13,KEY_F14,KEY_F15},                    
-                  {KEY_F16,KEY_F17,KEY_F18,KEY_F19,KEY_F20}};                    
+char key[4][5] = {{(char)KEY_F1, (char)KEY_F2, (char)KEY_F3, (char)KEY_F4, (char)KEY_F5},
+                  {(char)KEY_F6, (char)KEY_F7, (char)KEY_F8, (char)KEY_F9, (char)KEY_F10},
+                  {(char)KEY_F11, (char)KEY_F12, (char)KEY_F13, (char)KEY_F14, (char)KEY_F15},                    
+                  {(char)KEY_F16, (char)KEY_F17, (char)KEY_F18, (char)KEY_F19, (char)KEY_F20}};                    
 
 //Key Mask for second Key
-char mask[4][5] = {{KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL},
-                   {KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL},
-                   {KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL},                    
-                   {KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL,KEY_LEFT_CTRL}};            
+char mask[4][5] = {{(char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL},
+                   {(char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL},
+                   {(char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL},                    
+                   {(char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL, (char)KEY_LEFT_CTRL}};            
 
 //Key Mask for third Key
-char mask2[4][5] = {{KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT},
-                    {KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT},
-                    {KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT},                    
-                    {KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT,KEY_LEFT_SHIFT}};
+char mask2[4][5] = {{(char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT},
+                    {(char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT},
+                    {(char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT},                    
+                    {(char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT, (char)KEY_LEFT_SHIFT}};
 
 //Mask for Strings
 String str_mask[4][5] = {{"","","","",""},
@@ -76,7 +76,7 @@ char PIN = 7;
 int NUMPIXELS = 21; 
 unsigned int countges = 0;
 
-short RES = 600;
+unsigned int RES = 600;
 
 int phaseshift = RES/90;
 
@@ -164,13 +164,13 @@ void key_handle(uint8_t x, uint8_t y, uint8_t z){
 
 
 unsigned char color_r(unsigned int count){
-  if(count >= 0 && count < (RES/3)){
+  if(count >= 0 && count < RES/3){
     return (int)(255*count/(RES/3));
   }
-  else if (count >=(RES/3) && count <(2*RES/3)){
+  else if (count >=(RES/3) && count < (2*RES/3)){
     return (int)(510-(255*count/(RES/3)));
   }
-  else if(count >= RES && count < RES+(RES/3)){
+  else if(count >= RES && count < (RES+(RES/3))){
     return (int)(255*(count-RES)/(RES/3));
   }
   else if (count >=RES+(RES/3) && count <RES+(2*RES/3)){
