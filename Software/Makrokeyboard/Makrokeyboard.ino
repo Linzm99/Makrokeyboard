@@ -327,8 +327,26 @@ void key_flash(void){
 void RGB_Solid(uint16_t val){
   led.setBrightness(50);
   for(int i = 0; i< NUMPIXELS;++i){
-    if(last_key != led_map_diag[i]){
-      led.setPixelColor(led_map_diag[i],color_r((val + i*phaseshift)%RES),color_g((val + i*phaseshift)%RES),color_b((val + i*phaseshift)%RES));
+    if(last_key != led_map_diag[i]){      
+      const int HYS = 50;
+      const int MIN = 0 + HYS;
+      const int MAX = 255- HYS;
+      int RED = color_r((val + i*phaseshift)%RES);
+      if(RED<=MIN)
+        RED = MIN;
+      if(RED>=MAX)
+        RED = MAX;
+      int BLUE = color_b((val + i*phaseshift)%RES);
+      if(BLUE<=MIN)
+        BLUE = MIN;
+      if(BLUE>=MAX)
+        BLUE = MAX;
+      int GREEN = color_g((val + i*phaseshift)%RES);
+      if(GREEN<=MIN)
+        GREEN = MIN;
+      if(GREEN>=MAX)
+        GREEN = MAX;
+      led.setPixelColor(led_map_diag[i],RED,BLUE,GREEN);
     } else if(FADE){
       led.setPixelColor(led_map_diag[i],(int)((fade_out+color_r((val + i*phaseshift)%RES))/(2.0-(255-fade_out)/255)),(int)((fade_out+color_g((val + i*phaseshift)%RES))/(2.0-(255-fade_out)/255)),(int)((fade_out+color_b((val + i*phaseshift)%RES))/(2.0-(255-fade_out)/255)));
 
