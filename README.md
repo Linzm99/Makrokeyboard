@@ -4,7 +4,7 @@ Open Source Makrokeyboard based on Atmega32U4
 
 ## Code
 
-The Code for the Makrokeyboard was written for the Arduino IDE, which supports the Atmega32U4 as Arduino Leonardo. For uploading "Arduino Leonardo" should be selected as Board. The COM Port selector will show the Atmega32U4 as well.
+The Code for the Makrokeyboard was written for the Arduino IDE, which supports the Atmega32U4 as Arduino Leonardo/Pro Micro. For uploading "Arduino Leonardo" or "Arduino (Pro) Micro" should be selected as Board. The COM Port selector will show the Atmega32U4 as well.
 Hint: If your Chip wasn't flashed with a bootloader you have to do that first. This requires soldering a ISP Connector and flashing via (for example) Arduino ISP. [Tutorial from Leon Anavi](https://www.youtube.com/watch?v=ToMrxnRNHM4)
 
 ![Image Makrokeyboard close](/Bilder/Bild2.jpg)
